@@ -5,7 +5,7 @@ import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { Home, Supplier, Address, NotFound } from './sections';
 import { Container } from '@material-ui/core';
-
+import 'fontsource-roboto';
 const cache = new InMemoryCache();
 const client = new ApolloClient({
   cache,
@@ -14,7 +14,7 @@ const client = new ApolloClient({
 
 const App = () => {
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Router>
         <Switch>
           <Route exact path="/" component={Home} />

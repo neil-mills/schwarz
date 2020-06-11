@@ -33,10 +33,11 @@ export const typeDefs = gql`
     items: [Item]
     orders(filters: FiltersInput): [Order]
     orderedItems: [OrderedItems]
+    supplier(_id:String): Supplier
     suppliers: [Supplier]
   }
 
   type Mutation {
-    deleteOrder(id: ID!): Order!
+    deleteOrder(_id: ID!): Order!
   }
 `;

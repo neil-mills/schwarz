@@ -18,3 +18,14 @@ export interface Order {
 export interface OrderData {
   orders: Order[];
 }
+
+export interface OrderDataVariables {
+  filters?: {
+    supplier?: string;
+    customerAddress?: string
+  }
+}
+
+export interface SupplierData {
+  supplier: Supplier
+}

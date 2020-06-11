@@ -1,8 +1,8 @@
 import { gql } from 'apollo-boost';
 
 export const DELETE_ORDER = gql`
-  mutation DeleteOrder($id:ID!) {
-    deleteOrder(_id: $id) {
+  mutation DeleteOrder($_id:ID!) {
+    deleteOrder(_id: $_id) {
       _id
     }
   }

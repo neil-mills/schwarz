@@ -6,6 +6,7 @@ export interface Item {
 export interface Supplier {
   _id: string;
   title: string;
+  orders: Order[];
 }
 
 export interface Order {
@@ -24,6 +25,16 @@ export interface OrderDataVariables {
     supplier?: string;
     customerAddress?: string
   }
+}
+
+export interface OrderedItem {
+  _id: string
+    title: string
+    count: number
+}
+
+export interface OrderedItemsData {
+  orderedItems: OrderedItem[]
 }
 
 export interface SupplierData {

@@ -10,10 +10,22 @@ export const READ_SUPPLIERS = gql`
 `;
 
 export const READ_SUPPLIER = gql`
-  query Supplier($_id:String) {
+  query Supplier($_id: String) {
     supplier(_id: $_id) {
       _id
       title
+      orders {
+        _id
+        customerAddress
+        supplier {
+          _id
+          title
+        }
+        items {
+          _id
+          title
+        }
+      }
     }
   }
 `;

@@ -1,34 +1,53 @@
 import React, { Fragment } from 'react';
 import { useQuery } from '@apollo/react-hooks';
-import { READ_ORDERS, READ_SUPPLIER } from '../../graphql';
-import { Typography } from '@material-ui/core';
+import { READ_ORDERS } from '../../graphql';
+import { makeStyles } from '@material-ui/core';
+import { Alert } from '@material-ui/lab';
 
 import { OrderData, OrderDataVariables } from '../../lib/types';
-import { OrderTable } from '../../lib/components';
+import { Header, OrderTable } from '../../lib/components';
 
 interface Props {
   match: {
     params: {
-      address: string
+      address: string;
     };
   };
 }
 
+const useStyles = makeStyles({
+  alert: {
+    marginBottom: 10,
+  },
+});
+
 export const Address = ({ match }: Props) => {
- 
-  const { data: ordersData, loading: ordersLoading, error: ordersError } = useQuery<OrderData, OrderDataVariables>(
-    READ_ORDERS,
-    { variables: { filters: { customerAddress: decodeURI(match.params.address) } } }
-  );
+  const classes = useStyles();
+  const {
+    data: ordersData,
+    loading: ordersLoading,
+    error: ordersError,
+  } = useQuery<OrderData, OrderDataVariables>(READ_ORDERS, {
+    variables: {
+      filters: { customerAddress: decodeURI(match.params.address) },
+    },
+  });
 
   return (
     <Fragment>
-      <Typography variant="h4" component="h1" gutterBottom>
-       {decodeURI(match.params.address)}
-      </Typography>      
+      <Header title={decodeURI(match.params.address)} />
       {ordersLoading && <p>Loading Orders...</p>}
-      {ordersError && <p>Error: {ordersError.message}</p>}
-      {ordersData && <OrderTable customerAddress={match.params.address} orders={ordersData.orders} />}
+      {ordersError && (
+        <Alert severity="error" className={classes.alert}>
+          Error: {ordersError.message}
+        </Alert>
+      )}
+      {ordersData && (
+        <OrderTable
+          customerAddress={match.params.address}
+          orders={ordersData.orders}
+        />
+      )}
     </Fragment>
   );
 };

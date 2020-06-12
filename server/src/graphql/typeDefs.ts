@@ -21,12 +21,13 @@ export const typeDefs = gql`
     _id: ID!
     supplier: Supplier!
     customerAddress: String!
-    items: [Item]!
+    items: [Item]
   }
 
   type Supplier {
     _id: ID!
     title: String!
+    orders: [Order]
   }
 
   type Query {

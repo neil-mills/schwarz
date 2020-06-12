@@ -1,5 +1,5 @@
 import { IResolvers } from 'apollo-server-express';
-import { Supplier, Database } from '../../../lib/types';
+import { Supplier, Order, Item, Database } from '../../../lib/types';
 import { ObjectId } from 'mongodb';
 
 export const supplierResolvers: IResolvers = {
@@ -33,9 +33,35 @@ export const supplierResolvers: IResolvers = {
                 as: 'orders',
               },
             },
+            { $unwind: '$orders' },
+            {
+              $lookup: {
+                from: 'items',
+                localField: 'orders.items',
+                foreignField: '_id',
+                as: 'orders.items',
+              },
+            },
+            
+            {
+              $group: {
+                _id: "$_id",
+                title: { '$first': '$title' },
+                orders: {
+                  $push: {
+                    _id: '$orders._id',
+                    supplier: {
+                      _id: "$_id",
+                      title: "$title"
+                    },
+                    customerAddress: '$orders.customerAddress',
+                    items: '$orders.items'
+                  }
+                }
+            }}
+          
           ])
           .toArray();
-        console.log('SUPPLIER=', supplier);
         return supplier[0];
       } catch (error) {
         throw new Error(`Error with query: ${error}`);

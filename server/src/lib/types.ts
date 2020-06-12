@@ -13,7 +13,7 @@ export interface Supplier {
 
 export interface Order {
 	_id: ObjectId;
-	supplier: ObjectId;
+	supplier: ObjectId | Supplier;
 	customerAddress: string;
 	items: ObjectId[]
 }

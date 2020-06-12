@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import ApolloClient, { InMemoryCache } from 'apollo-boost';
 import { ApolloProvider } from 'react-apollo';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
-import { Home, Supplier, Address, NotFound } from './sections';
+import { Home, Supplier, Address, Item, NotFound } from './sections';
 import { Container } from '@material-ui/core';
 import 'fontsource-roboto';
 const cache = new InMemoryCache();
@@ -20,6 +20,7 @@ const App = () => {
           <Route exact path="/" component={Home} />
           <Route exact path="/supplier/:id" component={Supplier} />
           <Route exact path="/address/:address" component={Address} />
+          <Route exact paht="/item" component={Item} />
           <Route component={NotFound} />
         </Switch>
       </Router>

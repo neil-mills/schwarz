@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { Link } from 'react-router-dom';
-import { DELETE_ORDER, READ_ORDERS } from '../../../graphql';
+import { DELETE_ORDER, READ_ORDERS, READ_ORDERED_ITEMS } from '../../../graphql';
 import { Item, Order } from '../../types';
 import { ExecutionResult, DocumentNode } from 'graphql';
 import {
@@ -14,13 +14,18 @@ import {
   TableHead,
   TableRow,
   Paper,
-  Button,
+  Button
 } from '@material-ui/core';
+
+import { Alert } from '@material-ui/lab'
 
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
   },
+  alert: {
+    marginBottom: 10
+  }
 });
 
 const StyledTableCell = withStyles((theme) => ({
@@ -80,15 +85,15 @@ export const OrderTable = ({ orders, supplier, customerAddress }: Props) => {
     return acc;
   }, {});
 
-  const query:DocumentNode = READ_ORDERS;
-  const refetchQuery:RefetchQuery = Object.keys(filters).length ? { query, variables: { filters }} : { query }
+  
+  const refetchQuery:RefetchQuery = Object.keys(filters).length ? { query: READ_ORDERS, variables: { filters }} : { query: READ_ORDERS }
 
   const handleDeleteOrder = (
     id: string
   ): Promise<ExecutionResult<DeleteOrderData>> =>
     deleteOrder({
       variables: { _id: id },
-      refetchQueries: [refetchQuery],
+      refetchQueries: [refetchQuery,{query: READ_ORDERED_ITEMS}],
       awaitRefetchQueries: true,
     });
 
@@ -130,6 +135,11 @@ export const OrderTable = ({ orders, supplier, customerAddress }: Props) => {
   };
 
   return (
+    <Fragment>
+      {loading && <p>Deleting order...</p>}
+      {error &&
+      <Alert className={classes.alert} severity="error">{`Error deleting order: ${error.message}`}</Alert>
+      }
     <TableContainer component={Paper}>
       <Table className={classes.table}>
         <TableHead>
@@ -143,5 +153,6 @@ export const OrderTable = ({ orders, supplier, customerAddress }: Props) => {
         <TableBody>{renderOrders(orders)}</TableBody>
       </Table>
     </TableContainer>
+    </Fragment>
   );
 };

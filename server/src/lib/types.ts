@@ -8,7 +8,6 @@ export interface Item {
 export interface Supplier {
 	_id: ObjectId;
 	title: string;
-	orders?: Order[]
 }
 
 export interface Order {

@@ -27,7 +27,6 @@ export const typeDefs = gql`
   type Supplier {
     _id: ID!
     title: String!
-    orders: [Order]
   }
 
   type Query {

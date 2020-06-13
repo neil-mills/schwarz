@@ -6,7 +6,6 @@ export interface Item {
 export interface Supplier {
   _id: string;
   title: string;
-  orders: Order[];
 }
 
 export interface Order {
